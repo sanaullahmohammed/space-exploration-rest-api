@@ -1,0 +1,15 @@
+{
+  "name": "spaceexploration-restapi",
+  "version": "1.0.0",
+  "description": "RESTful Api demonstration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
