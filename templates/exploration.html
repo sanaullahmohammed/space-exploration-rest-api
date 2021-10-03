@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<style>
+  h1 {
+    color: white;
+    font-family: Bahnschrift SemiBold;
+    text-align: center;
+  }
+
+  body {
+    color: white;
+    font-family: Bahnschrift SemiBold;
+    background-image: url(/wallpaper.gif);
+    background-attachment: fixed;
+  }
+
+  /* Float four columns side by side */
+  .column {
+    float: left;
+    width: 25%;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding: 0 10px;
+  }
+
+  /* Style the counter cards */
+  .column {
+    box-shadow: 20px 20px 40px 0  rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    text-align: center;
+    background-image: url("/card_bg.webp");
+    margin-left: 50px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
+  .card-img-top {
+    border-radius: 25px;
+  }
+
+  .card-text {
+    font-size: large;
+  }
+
+</style>
+
+<body>
+  <br>
+  <h1>EXPLORATIONS</h1>
+  <div class="container">
+    <div class="card-deck justify-content-center">
+    </div>
+  </div>
+</body>
+<script>
+  var xmlHttp = new XMLHttpRequest();
+  var PLANETS = {}
+  var listOfAstronauts = []
+  var idx=0
+  var ASTRONAUTS = {}
+  var EXPLORATIONS = {}
+  var RELATIONSHIPS = {}
+  var planets = []
+  var humans = []
+  var PARENT = document.getElementsByClassName("card-deck justify-content-center")[0]
+  var i,j,k
+  
+  //Get Astronaut details
+  xmlHttp.open("GET", "http://localhost:8000/api/astronauts", false); // false for synchronous request
+  xmlHttp.send(null);
+  ASTRONAUTS = JSON.parse(xmlHttp.responseText);
+
+  //Get Planet details
+  xmlHttp.open("GET", "http://localhost:8000/api/planets", false); // false for synchronous request
+  xmlHttp.send(null);
+  PLANETS = JSON.parse(xmlHttp.responseText);
+
+  //Get EXPLORATIONS
+  xmlHttp.open("GET", "http://localhost:8000/api/explorations", false); // false for synchronous request
+  xmlHttp.send(null);
+  EXPLORATIONS = JSON.parse(xmlHttp.responseText);
+
+  console.log(PLANETS)
+  console.log(ASTRONAUTS)
+  console.log(EXPLORATIONS)
+
+  for ( i = 0; i < EXPLORATIONS.data.length; i++) {
+    var key = EXPLORATIONS.data[i].planet
+
+    if (planets.indexOf(key) == -1)
+      planets.push(key)
+  }
+  for (i = 0; i < planets.length; i++) {
+    key = planets[i]
+    var tmp = []
+    for ( j = 0; j < EXPLORATIONS.data.length; j++) {
+      if (EXPLORATIONS.data[j].planet == key)
+        tmp.push(EXPLORATIONS.data[j].astronaut)
+    }
+    humans.push(tmp)
+  }
+  for (i = 0; i < planets.length; i++) {
+    RELATIONSHIPS[planets[i]] = humans[i]
+  }
+
+
+  planets.forEach(function (element){
+    var CHILD = document.createElement("div")
+    var galaxy = PLANETS.data[element-1].galaxy
+    var dateDiscovered = PLANETS.data[element-1].discoveredDate
+    var Name = PLANETS.data[element-1].name
+    CHILD.className = "column"
+    listOfAstronauts = []
+    var TEMPLATE = `<img src="/default_expPlan.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title" style="font-size: x-large; color: #white">
+            <b><u>${Name}</u></b>
+          </h5>
+          <p class="card-text">
+            Galaxy : ${galaxy}<br>
+            Discovered Date : ${dateDiscovered}<br>
+            <u>Name of Astronauts : </u>
+          <l class="listMe"> <br>
+          </l>
+          </p>
+        </div>`
+    for (j=0; j < RELATIONSHIPS[element].length; j++){
+      for( k=0; k < ASTRONAUTS.data.length; k++){
+        if (ASTRONAUTS.data[k].id == RELATIONSHIPS[element][j]){
+          listOfAstronauts.push("<li>"+ASTRONAUTS.data[k].name+"</li>")
+        }
+      }
+    }
+    console.log(listOfAstronauts)
+    CHILD.innerHTML = TEMPLATE.trim()
+    PARENT.appendChild(CHILD)
+    var LIST = document.getElementsByClassName("listMe")[idx++]
+    LIST.innerHTML = listOfAstronauts.join('')
+  });
+
+</script>
+
+</html>

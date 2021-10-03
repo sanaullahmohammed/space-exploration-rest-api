@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<style>
+  h1 {
+    color: rgb(255, 255, 255);
+    font-family: Bahnschrift SemiBold;
+    text-align: center;
+  }
+
+  body {
+    color: white;
+    font-family: Bahnschrift SemiBold;
+    background-image: url(/wallpaper.gif);
+    background-attachment: fixed;
+  }
+
+  /* Float four columns side by side */
+  .column {
+    float: left;
+    width: 25%;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding: 0 10px;
+  }
+
+  /* Style the counter cards */
+  .column {
+    box-shadow: 20px 20px 40px 0 rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    text-align: center;
+    background-image: url("/card_bg.webp");
+    margin-left: 50px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    border-radius: 25px;
+  }
+
+  .card-img-top {
+    border-radius: 25px;
+  }
+
+  .card-text {
+    font-size: large;
+  }
+
+</style>
+
+<body>
+  <br>
+  <h1>ASTRONAUTS</h1>
+  <div class="container">
+    <div class="card-deck justify-content-center">
+    </div>
+  </div>
+</body>
+<script>
+  var PARENT = document.getElementsByClassName("card-deck justify-content-center")[0]
+  var IMAGE
+  //Make the get request
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.open( "GET", "http://localhost:8000/api/astronauts", false ); // false for synchronous request
+  xmlHttp.send( null );
+  
+  var responseData = JSON.parse(xmlHttp.responseText);
+
+  //make the divs
+  for(var i=0; i < responseData.data.length; i++)
+  {
+    var CHILD = document.createElement("div")
+    CHILD.className = "column"
+    IMAGE = responseData.data[i].gender == "M" ? "/male3.jpg" : "/female3.jpg"
+    console.log(responseData.data[i].name)
+    var TEMPLATE = `<img src=${IMAGE} class="card-img-top" alt="...">
+                    <div class="card-body"> 
+                      <h5 class="card-title" 
+                          style="font-size: x-large; color: white"><b>
+                            <u>${responseData.data[i].name}</u></b>
+                      </h5>
+                      <p class="card-text">
+                        Name : ${responseData.data[i].name} <br>
+                        Age : ${responseData.data[i].age} <br>
+                        Gender : ${responseData.data[i].gender} <br>
+                        Role : ${responseData.data[i].role} <br>
+                        Nationality : ${responseData.data[i].nationality}
+                      </p>
+                    </div>`
+    CHILD.innerHTML = TEMPLATE.trim();
+    PARENT.appendChild(CHILD)
+  }
+</script>
+
+</html>
