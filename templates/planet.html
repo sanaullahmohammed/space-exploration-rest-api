@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+  h1 {
+    color: white;
+    font-family: Bahnschrift SemiBold;
+    text-align: center;
+  }
+
+  body {
+    color: white;
+    font-family: Bahnschrift SemiBold;
+    background-image: url(/wallpaper.gif);
+    background-attachment: fixed;
+  }
+
+  /* Float four columns side by side */
+  .column {
+    float: left;
+    width: 25%;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding: 0 10px;
+  }
+
+  /* Style the counter cards */
+  .column {
+    box-shadow: 20px 20px 40px 0 rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    text-align: center;
+    background-image: url("/card_bg.webp");
+    margin-left: 50px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    border-radius: 25px;
+  }
+
+  .card-img-top {
+    border-radius: 25px;
+  }
+
+  .card-text {
+    font-size: large;
+  }
+
+</style>
+
+<body>
+  <br>
+  <h1>PLANETS</h1>
+  <div class="container">
+    <div class="card-deck justify-content-center">
+    </div>
+  </div>
+</body>
+<script>
+  var PARENT = document.getElementsByClassName("card-deck justify-content-center")[0]
+  var IMAGE = ["/planet1.jpg", "/planet2.jpg", "/planet3.jpg",
+    "/planet4.jpg", "/planet5.jpg", "/planet6.jpg",
+    "/planet7.jpg", "/planet8.jpg", "/planet9.jpg",
+    "/planet10.jpg", "/planet11.jpg", , "/planet12.jpg",
+    "/planet13.jpg"]
+  //Make the get request
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.open("GET", "http://localhost:8000/api/planets", false); // false for synchronous request
+  xmlHttp.send(null);
+
+  var responseData = JSON.parse(xmlHttp.responseText);
+  var a=0
+  var b=0
+
+  //make the divs
+  for (var i = 0; i < responseData.data.length; i++) {
+    var CHILD = document.createElement("div")
+    CHILD.className = "column"
+    //IMG = IMAGE[i]
+    while(true)
+    {
+      IMG = IMAGE[a];
+      a++;
+      if(a==11)
+      a=0;
+      if(b==responseData.data.length)
+      break;
+      b++;
+    }
+
+    console.log(responseData.data[i].name)
+    if (responseData.data[i].habitable == 0) {
+      HAB = "Yes"
+    }
+    else {
+      HAB = "No"
+    }
+    if (responseData.data[i].hyperJump == 0) {
+      HYP = "Yes"
+    }
+    else {
+      HYP = "No"
+    }
+    var TEMPLATE = `<img src=${IMG} class="card-img-top" width="234" height="236"  alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title" 
+                          style="font-size: x-large; color: #white"><b>
+                            <u>${responseData.data[i].name}</u></b>
+                      </h5>
+                      <p class="card-text">
+                        Name :${responseData.data[i].name} <br>
+                        Discovered Date :${responseData.data[i].discoveredDate} <br>
+                        Galaxy :${responseData.data[i].galaxy} <br>
+                        Habitable :${HAB} <br>
+                        Hyper Jump :${HYP}
+                      </p></div>`
+    CHILD.innerHTML = TEMPLATE.trim();
+    PARENT.appendChild(CHILD)
+  }
+</script>
+
+</html>
