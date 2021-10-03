@@ -1,0 +1,107 @@
+<html>
+<style>
+  body {
+    color: white;
+    font-family: Bahnschrift SemiBold;
+    background-image: url(/wallpaper.gif);
+    background-attachment: fixed;
+  }
+
+
+  h1 {
+    color: #dff0f1;
+    font-family: Bahnschrift SemiBold;
+    text-align: center;
+    text-shadow: 4px 4px 4px black;
+    margin-top: 100px;
+  }
+
+  form{
+    font-size: large;
+  }
+
+  input{
+    font-size: large;
+    font-family: Bahnschrift SemiBold;
+    color: black;
+    background-color: antiquewhite;
+  }
+
+  input:focus{
+    background-color: rgb(246, 255, 127);
+  }
+
+  select{
+    font-size: large;
+    font-family: Bahnschrift SemiBold;
+    color: black;
+    background-color: antiquewhite;
+  }
+
+  select:focus{
+    background-color: rgb(246, 255, 127);
+  }
+
+</style>
+
+<head>
+  <center>
+    <h1>Astronaut Details</h1>
+    <br>
+    <script>
+      //The below function fetches the next free ID which can be alotted to the entry
+      function fetchID() {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", "http://localhost:8000/api/astronauts", false); // false for synchronous request
+        xmlHttp.send(null);
+        var responseData = JSON.parse(xmlHttp.responseText);
+        return responseData.data.length + 1
+      }
+      //The below function makes the POST api call onto the expressJS backend
+      function postData(details) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8000/api/astronauts", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(details));
+      }
+      //PlaceHolder function which gathers the form input data into usable values and makes an Object
+      function validateForm() {
+        let ID = fetchID();
+        var details = {
+          "id": ID,
+          "name": document.getElementById("name").value,
+          "age": parseInt(document.getElementById("age").value),
+          "gender": document.getElementById("gender").value,
+          "role": document.getElementById("role").value,
+          "nationality": document.getElementById("nation").value
+        }
+        console.log(details)
+        postData(details);
+        alert("POST request Successful!")
+        window.location.href="http://localhost:8000/"
+      }
+
+    </script>
+  </head>
+
+  <body style="background-image: url('/wallpaper.gif');">
+    <form name="myForm" >
+      Name: <input type="text" id="name"><br><br><br>
+      Age: <input type="number" id="age"><br><br><br>
+      <label for="gender">Gender:</label>
+      <select id="gender" name="gender">
+      <option value="M">Male</option>
+      <option value="F">Female</option>
+      </select><br><br><br>
+      Role: <input type="text" id="role"><br><br><br>
+      Nation: <input type="text" id="nation"><br><br><br>
+      <input type="button" value="Add Astronaut" onclick="validateForm()"
+              style="background-color: black; 
+                      color:beige; font-size:large; 
+                      border-color:black; 
+                      height: 40px">
+    </form>
+  </body>
+</center>
+
+</html>
