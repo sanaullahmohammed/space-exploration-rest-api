@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+  .card-columns {
+    border-radius: 25px;
+  }
+
+  .card-img-top {
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 5%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 250px;
+    width: 250px;
+
+  }
+
+  .card-img-top-a {
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 5%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 250px;
+    width: 250px;
+
+  }
+
+  .card-img-top-b {
+    filter: invert(1);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  body {
+    background-image: url('/wallpaper.gif');
+    background-attachment: fixed;
+  }
+
+  .card {
+    background-image: url('/card_bg.webp');
+  }
+
+
+  input {
+    border-radius: 25px;
+    width: 50%;
+  }
+
+  h4 {
+    color: white;
+    font-size: large;
+    text-align: center;
+    font-family: Bahnschrift SemiBold;
+  }
+
+  h1 {
+    color: white;
+    font-size: x-large;
+    text-align: center;
+    font-family: Bahnschrift SemiBold;
+  }
+</style>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport">
+  <title>Home page</title>
+  <link rel="stylesheet" href="/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+</head>
+
+
+<body>
+  <title>Home page</title>
+  <br>
+  <h1>SPACE EXPLORATION</h1>
+
+  <!--Cards astronauts, planets and exploration-->
+  <div class="HyperLinks" style="text-align: left; align-self: center;">
+    <div class="card-columns mx-auto d-flex justify-content-center col-12">
+      <!--max_size = 12-->
+
+      <!--Astronauts-->
+      <div class class="card-columns" style="margin: 100px 50px 100px 50px ; align-self:center;">
+        <div class="card-half">
+          <div class="card">
+            <img class="card-img-top" height="250px" width="250px" src="/default_astro.png" alt="Card image">
+            <div class="card-body ">
+              <h4 class="card-title">Astronauts</h4>
+              <center>
+                <button id="viewAstronauts" class="btn btn-primary"
+                  style="color:white; background-color:black; border:black; font-family: Bahnschrift SemiBold; margin-bottom: 10px;">
+                  <b>View Astronauts</b>
+                </button>
+                <br>
+                <button id="addAstronaut" class="btn btn-primary"
+                  style="color:white; background-color:black; border:black; font-family: Bahnschrift SemiBold;">
+                  <b>Add Astronaut</b>
+                </button>
+              </center>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Planets-->
+      <div class="card-half2  " style="margin:100px 50px 100px 50px;">
+        <div class="card">
+          <img class="card-img-top" src="/default_planet.png" alt="Card image">
+          <div class="card-body">
+            <h4 class="card-title">Planets</h4>
+            <center>
+              <button id="viewPlanets" class="btn btn-primary"
+                style="color:white; background-color:black; border:black; font-family: Bahnschrift SemiBold; margin-bottom: 10px;">
+                <b>View Planets</b>
+              </button>
+              <br>
+              <button id="addPlanet" class="btn btn-primary"
+                style="color:white; background-color:black; border:black; font-family: Bahnschrift SemiBold;">
+                <b>Add Planet</b>
+              </button>
+            </center>
+          </div>
+        </div>
+      </div>
+
+      <!--Exploration-->
+      <div class="card-half2  " style="margin:100px 50px 100px 50px;">
+        <div class="card">
+          <img class="card-img-top-b" src="/default_exp.png" alt="Card image">
+          <div class="card-body">
+            <h4 class="card-title">Explorations</h4>
+            <center>
+              <button id="viewExplorations" class="btn btn-primary"
+                style="color:white; background-color:black; border:black; font-family: Bahnschrift SemiBold; margin-bottom: 10px;">
+                <b>View Exploration</b>
+              </button>
+            </center>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </head>
+
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+    <div class="container">
+      <a href="/"
+        style="color:	white; font-family: Bahnschrift SemiBold;text-shadow: 2px 2px 2px black;"><b>Home</b></a>
+      <a href="TermsOfUse"
+        style="color:	white; font-family: Bahnschrift SemiBold;text-shadow: 2px 2px 2px black;"><b>Terms of Use</b></a>
+      <a href="ContactUs"
+        style="color:	white; font-family: Bahnschrift SemiBold;text-shadow: 2px 2px 2px black;"><b>Contact Us</b></a>
+    </div>
+  </nav>
+</body>
+<script>
+  document.getElementById('viewAstronauts').onclick = () => { location.href = "astronauts" }
+  document.getElementById('addAstronaut').onclick = () => { location.href = "addAstronaut" }
+  document.getElementById('viewPlanets').onclick = () => { location.href = "planets" }
+  document.getElementById('addPlanet').onclick = () => { location.href = "addPlanet" }
+  document.getElementById('viewExplorations').onclick = () => { location.href = "explorations" }
+</script>
+
+</html>
