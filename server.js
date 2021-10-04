@@ -2,12 +2,15 @@
 var express = require("express")
 var app = express()
 var db = require("./database.js")
-var cors = require('cors')
+var path = require('path')
+//var cors = require('cors')
 
-app.use(cors())
+//app.use(cors())
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(express.static(__dirname+'/static'));
 
+console.log(__dirname)
 // Server port
 var HTTP_PORT = 8000 
 // Start server
@@ -15,13 +18,40 @@ app.listen(HTTP_PORT, () => {
     console.log("Server running on port %PORT%".replace("%PORT%",HTTP_PORT))
 });
 // Root endpoint
-app.get("/", (req, res, next) => {
-    res.json({"message":"Ok"})
+app.get("/", (req, res) => {
+    res.sendFile('templates/home.html',{root:__dirname})
 });
 
+app.get("/astronauts", (req, res) => {
+    res.sendFile('templates/astronaut.html',{root:__dirname})
+});
+
+app.get("/addAstronaut", (req, res) => {
+    res.sendFile('templates/astronautForm.html',{root:__dirname})
+});
+
+app.get("/planets", (req, res) => {
+    res.sendFile('templates/planet.html',{root:__dirname})
+});
+
+app.get("/addPlanet", (req, res) => {
+    res.sendFile('templates/planetForm.html',{root:__dirname})
+});
+
+app.get("/explorations", (req, res) => {
+    res.sendFile('templates/exploration.html',{root:__dirname})
+});
+
+app.get("/TermsOfUse", (req, res) => {
+    res.sendFile('templates/TermsOfUse.html',{root:__dirname})
+});
+
+app.get("/ContactUs", (req, res) => {
+    res.sendFile('templates/ContactUs.html',{root:__dirname})
+});
 // Insert here other API endpoints
 
-app.get("/astronauts", (req, res, next) => {
+app.get("/api/astronauts", (req, res) => {
     var sql = "select * from astronauts"
     var params = []
     db.all(sql, params, (err, rows) => {
@@ -36,7 +66,7 @@ app.get("/astronauts", (req, res, next) => {
       });
 });
 
-app.get("/planets", (req, res, next) => {
+app.get("/api/planets", (req, res) => {
     var sql = "select * from planets"
     var params = []
     db.all(sql, params, (err, rows) => {
@@ -51,7 +81,7 @@ app.get("/planets", (req, res, next) => {
       });
 });
 
-app.get("/explorations", (req, res, next) => {
+app.get("/api/explorations", (req, res) => {
     var sql = "select * from planetastronauts"
     var params = []
     db.all(sql, params, (err, rows) => {
@@ -66,7 +96,8 @@ app.get("/explorations", (req, res, next) => {
       });
 });
 
-app.get("/api/astronauts/:id", (req, res, next) => {
+/*
+app.get("/api/get/astronauts/:id", (req, res) => {
     var sql = "select * from astronauts where id = ?"
     var params = [req.params.id]
     db.get(sql, params, (err, row) => {
@@ -80,8 +111,10 @@ app.get("/api/astronauts/:id", (req, res, next) => {
         })
       });
 });
+**/
 
-app.get("/api/planets/:id", (req, res, next) => {
+/*
+app.get("/api/get/planets/:id", (req, res) => {
     var sql = "select * from planets where id = ?"
     var params = [req.params.id]
     db.get(sql, params, (err, row) => {
@@ -95,8 +128,8 @@ app.get("/api/planets/:id", (req, res, next) => {
         })
       });
 });
-
-app.post("/api/astronauts/", (req, res, next) => {
+**/
+app.post("/api/astronauts/", (req, res) => {
     var errors=[]
     if (!req.body.id){
         errors.push("No id specified");
@@ -128,7 +161,7 @@ app.post("/api/astronauts/", (req, res, next) => {
         role: req.body.role,
         nationality: req.body.nationality
     }
-    console.log("Successful API post call")
+    
     var sql ='INSERT INTO astronauts (id, age, gender, role, nationality, name) VALUES (?,?,?,?,?,?)'
     var params =[data.id, data.age, data.gender, data.role, data.nationality, data.name]
     db.run(sql, params, function (err, result) {
@@ -145,7 +178,7 @@ app.post("/api/astronauts/", (req, res, next) => {
     });
 })
 
-app.post("/api/planets/", (req, res, next) => {
+app.post("/api/planets/", (req, res) => {
     var errors=[]
     if (!req.body.id){
         errors.push("No id specified");
@@ -178,6 +211,8 @@ app.post("/api/planets/", (req, res, next) => {
         habitable: req.body.habitable,
         hyperJump: req.body.hyperJump
     }
+    console.log("Successful PLANET API post call")
+    console.log(data)
     var sql ='INSERT INTO planets (id, name, discoveredDate, galaxy, habitable, hyperJump) VALUES (?,?,?,?,?,?)'
     var params =[data.id, data.name, data.discoveredDate, data.galaxy, data.habitable, data.hyperJump]
     db.run(sql, params, function (err, result) {
