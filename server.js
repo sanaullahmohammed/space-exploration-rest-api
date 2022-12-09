@@ -15,7 +15,7 @@ console.log(__dirname)
 var HTTP_PORT = 8000 
 // Start server
 app.listen(HTTP_PORT, () => {
-    console.log("Server running on port %PORT%".replace("%PORT%",HTTP_PORT))
+    console.log(`Server running on http://localhost:${HTTP_PORT}`);
 });
 // Root endpoint
 app.get("/", (req, res) => {
@@ -96,39 +96,6 @@ app.get("/api/explorations", (req, res) => {
       });
 });
 
-/*
-app.get("/api/get/astronauts/:id", (req, res) => {
-    var sql = "select * from astronauts where id = ?"
-    var params = [req.params.id]
-    db.get(sql, params, (err, row) => {
-        if (err || typeof(row) == "undefined") {
-          res.status(400).json({error:"Bad Request"})
-          return;
-        }
-        res.json({
-            "message":"success",
-            "data":row
-        })
-      });
-});
-**/
-
-/*
-app.get("/api/get/planets/:id", (req, res) => {
-    var sql = "select * from planets where id = ?"
-    var params = [req.params.id]
-    db.get(sql, params, (err, row) => {
-        if (err) {
-          res.status(400).json({"error":err.message});
-          return;
-        }
-        res.json({
-            "message":"success",
-            "data":row
-        })
-      });
-});
-**/
 app.post("/api/astronauts/", (req, res) => {
     var errors=[]
     if (!req.body.id){
